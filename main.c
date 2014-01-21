@@ -1,3 +1,7 @@
+/* 
+  Tetris 3DS Homebrew
+  Nop90 - Public domain
+*/
 #include "main.h"
 #include "memory.h"
 #include "HID.h"
