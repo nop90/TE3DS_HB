@@ -16,41 +16,18 @@ int main(){
   return 0;
 }
 
-void  getnickname(char* buf){
-  int i;
-  for (i=0;i<10; i=i+2)
-    buf[i]= read_byte(NICKNAME + i);
-}
-
 void drawlogo(){
   char i,j;
-      for (i=0; i<10; i++)
-        for (j=0; j<12; j++) if(logo[i+j*10]>0) drawsquare(i,15-j,logo[i+j*10]);
+  for (i=0; i<10; i++)
+    for (j=0; j<12; j++) if(logo[i+j*10]>0) drawsquare(i,15-j,logo[i+j*10]);
 }
 
 void initscreens(){
   int i;
-
-  clearscreen(FRAME_BUFFER0 | TOP_SCREEN | BOTTOM_SCREEN);
-  clearscreen(FRAME_BUFFER1 | TOP_SCREEN | BOTTOM_SCREEN);
-
-  draw_string("Framebuffer 0",0,0,255,255,255, BOTTOM_FRAME0);
-  draw_string("Framebuffer 1",0,0,255,255,255, BOTTOM_FRAME1);
-
-  for(i=0; i<400; i=i+3){
-    draw_line(i,0,i,239,0,0,255, TOP_LEFT_FRAME0);  
-    draw_line(i,0,i,239,0,0,255, TOP_LEFT_FRAME1);  
-    draw_line(i,0,i,239,0,0,255, TOP_RIGHT_FRAME0);  
-    draw_line(i,0,i,239,0,0,255, TOP_RIGHT_FRAME1);  
-  }
-  draw_rect(18,18,380,220,255,255,0,TOP_LEFT_FRAME0);  
-  draw_rect(18,18,380,220,255,255,0,TOP_LEFT_FRAME1);  
-  draw_rect(18,18,380,220,255,255,0,TOP_RIGHT_FRAME0);  
-  draw_rect(18,18,380,220,255,255,0,TOP_RIGHT_FRAME1);  
-  draw_fillrect(19,19,379,219,128,128,128,TOP_LEFT_FRAME0);  
-  draw_fillrect(19,19,379,219,128,128,128,TOP_LEFT_FRAME1);  
-  draw_fillrect(19,19,379,219,128,128,128,TOP_RIGHT_FRAME0);  
-  draw_fillrect(19,19,379,219,128,128,128,TOP_RIGHT_FRAME1); 
+  clearscreen(TOP_SCREEN | BOTTOM_SCREEN);
+  for(i=0; i<400; i=i+3) draw_line(i,0,i,239,0,0,255, TOP_SCREEN);
+  draw_rect(18,18,380,220,255,255,0,TOP_SCREEN);  
+  draw_fillrect(19,19,379,219,128,128,128,TOP_SCREEN); 
 }
 
 void drawpiece(char x, char y, char rot, char piece, char state){
@@ -78,41 +55,45 @@ void drawpiece(char x, char y, char rot, char piece, char state){
 
 void drawsquare(char x, char y, char color){
   if ((x>=0)&(x<10)&(y>=0)&(y<18)){
-    draw_fillrect(((y+1)*20),(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], TOP_LEFT_FRAME0);
-    draw_fillrect(((y+1)*20),(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], TOP_LEFT_FRAME1);
-    draw_fillrect(((y+1)*20),(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], TOP_RIGHT_FRAME0);
-    draw_fillrect(((y+1)*20),(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], TOP_RIGHT_FRAME1);
-
+    draw_fillrect(((y+1)*20),(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], TOP_SCREEN);
     if(color){ 
-      draw_line(((y+1)*20),(x+1)*20,((y+2)*20)-1,(x+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_LEFT_FRAME0);
-      draw_line(((y+1)*20),(x+1)*20,((y+2)*20)-1,(x+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_LEFT_FRAME1);
-      draw_line(((y+1)*20),(x+1)*20,((y+2)*20)-1,(x+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_RIGHT_FRAME0);
-      draw_line(((y+1)*20),(x+1)*20,((y+2)*20)-1,(x+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_RIGHT_FRAME1);
-
-      draw_line(((y+1)*20),(x+1)*20,((y+1)*20),((x+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_LEFT_FRAME0);
-      draw_line(((y+1)*20),(x+1)*20,((y+1)*20),((x+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_LEFT_FRAME1);
-      draw_line(((y+1)*20),(x+1)*20,((y+1)*20),((x+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_RIGHT_FRAME0);
-      draw_line(((y+1)*20),(x+1)*20,((y+1)*20),((x+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_RIGHT_FRAME1);
-
-      draw_line(((y+2)*20)-1,(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_LEFT_FRAME0);
-      draw_line(((y+2)*20)-1,(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_LEFT_FRAME1);
-      draw_line(((y+2)*20)-1,(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_RIGHT_FRAME0);
-      draw_line(((y+2)*20)-1,(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_RIGHT_FRAME1);
-
-      draw_line(((y+1)*20),((x+2)*20)-1,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_LEFT_FRAME0);
-      draw_line(((y+1)*20),((x+2)*20)-1,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_LEFT_FRAME1);
-      draw_line(((y+1)*20),((x+2)*20)-1,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_RIGHT_FRAME0);
-      draw_line(((y+1)*20),((x+2)*20)-1,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_RIGHT_FRAME1);
+      draw_line(((y+1)*20),(x+1)*20,((y+2)*20)-1,(x+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_SCREEN);
+      draw_line(((y+1)*20),(x+1)*20,((y+1)*20),((x+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, TOP_SCREEN);
+      draw_line(((y+2)*20)-1,(x+1)*20,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_SCREEN);
+      draw_line(((y+1)*20),((x+2)*20)-1,((y+2)*20)-1,((x+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, TOP_SCREEN);
     }
   }
 }
 
 char getlevel(){
+  int HID_new,HID_old;
+  char click;
+  HID_old=0;
+  click=0;
+  draw_string("Use arrows to chose a level then Press start",0,0,255,255,255, BOTTOM_SCREEN);
+  HID_new = read_word(HID);
+  while (click==0){
+    if(HID_new^HID_old){
+      HID_old=HID_new;
+      if (!(HID_new & BUTTON_START)) click=1; 
+    }
+  }
   return 1;
 }
 
 void asknewgame(){
-  while(1);
+  int HID_new,HID_old;
+  char click;
+  HID_old=0;
+  click=0;
+  draw_string("Press start for a new play",0,24,255,255,255, BOTTOM_SCREEN);
+  HID_new = read_word(HID);
+  while (click==0){
+    if(HID_new^HID_old){
+      HID_old=HID_new;
+      if (!(HID_new & BUTTON_START)) click=1; 
+    }
+  }
 }
 
 void startgame(char level){
@@ -140,8 +121,6 @@ void initboard(char* board){
 }
 
 char playpiece(char piece, char level, int* points,char* board){
-// to do: implement points
-
   int i, lines, HID_new,HID_old;
   char x,y,x1, rot,rot1;
   char nextpiece;
