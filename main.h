@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-static char colors[9][3] = {{128,128,128},{0,127,0},{127,0,0},{0,0,127},{0,127,127},{127,0,127},{127,127,0},{63,63,127},{128,128,128}};
+static char colors[9][3] = {{128,128,128},{0,127,0},{127,0,0},{0,0,127},{0,127,127},{127,0,127},{127,127,0},{63,63,127},{200,200,200}};
 static char logo[120] = 
     {1,1,1,2,2,0,0,0,5,5,
      0,1,3,3,2,4,4,0,5,0,
@@ -58,12 +58,13 @@ void initscreens();
 void drawlogo();
 void initboard(char* board);
 void drawpiece(char x, char y, char rot, char piece, char state);
+void drawnextpiece(char piece, char state);
 void drawsquare(char x, char y, char color);
 char getlevel();
 char playlevel(char level, int* points);
 void startgame(char level);
-char playpiece(char piece, char level, int* points,char* board);
-char gluepiece(char x, char y,char rot, char piece,char* board);
+char playpiece(char piece, char linecompleted, char level, int* points,char* board);
+char gluepiece(char x, char y, char rot, char piece,char* board);
 int isflying (char piece, char x, char y, char rot, char* board);
 void asknewgame();
 
