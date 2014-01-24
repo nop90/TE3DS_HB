@@ -96,6 +96,45 @@ void draw_string(char* word, int x,int y, char r, char g, char b, int screen){
     }
 }
 
+void draw_string_rot(char* word, int x,int y, char r, char g, char b, int screen){
+    int j, k;
+    unsigned char mask;
+    unsigned char l;
+    int tmp_x =x;
+    int i;
+    int line = 0;
+
+    int width;
+
+  switch(screen){
+    case BOTTOM_SCREEN:
+      width=BOTTOM_WIDTH;
+      break;
+    default:
+      width=TOP_WIDTH;
+      break;
+  }
+
+    for (i = 0; i <strlen(word); i++){
+     
+      if (tmp_x+8 > TOP_HEIGHT) {
+        line++;
+        tmp_x = x;
+      }
+      for (j = 0; j < 8; j++){
+        mask = 0b10000000;
+        l = ascii_data[word[i]][j];
+        for (k = 0; k < 8; k++){
+          if ((mask >> k) & l){
+            draw_pixel(width+j+y+(line*8),-k+TOP_HEIGHT-tmp_x,r,g,b,screen);
+          }     
+        }
+      }
+
+      tmp_x = tmp_x+8;
+    }
+}
+
 /*
   draw_line - H_line and V_line only
 */
@@ -139,7 +178,7 @@ int X1,X2,Y1,Y2,i,j;
   } 
 
   for(i=X1;i<=X2;i++){
-    for(j=X1;j<=X2;j++){
+    for(j=Y1;j<=Y2;j++){
       draw_pixel(i,j, r, g, b, screen);
     }
   }
