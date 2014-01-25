@@ -23,8 +23,8 @@ static char pieces[7][16] =
       0,0,0,0},
 
      {0,0,0,0,
-      2,2,0,0,
       0,2,2,0,
+      0,0,2,2,
       0,0,0,0},
 
      {0,0,0,0,
@@ -38,8 +38,8 @@ static char pieces[7][16] =
       0,0,0,0},
 
      {0,0,0,0,
-      5,0,0,0,
-      5,5,5,0,
+      0,5,0,0,
+      0,5,5,5,
       0,0,0,0},
 
      {0,0,0,0,
@@ -48,8 +48,8 @@ static char pieces[7][16] =
       0,0,0,0},
 
      {0,0,0,0,
-      7,7,7,7,
       0,0,0,0,
+      7,7,7,7,
       0,0,0,0}};
 
 
@@ -63,7 +63,7 @@ void drawsquare(char x, char y, char color);
 char getlevel();
 char playlevel(char level, int* points);
 void startgame(char level);
-char playpiece(char piece, char linecompleted, char level, int* points,char* board);
+char playpiece(char piece, char* linecompleted, char level, int* points,char* board);
 char gluepiece(char x, char y, char rot, char piece,char* board);
 int isflying (char piece, char x, char y, char rot, char* board);
 void asknewgame();
