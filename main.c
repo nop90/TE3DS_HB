@@ -15,6 +15,8 @@ int main(){
   for(i=0; i<400; i=i+3) draw_line(i,0,i,239,0,0,255, TOP_SCREEN);
   draw_rect(19,19,380,220,255,255,0,TOP_SCREEN);  
   for(i=0; i<320; i=i+3) draw_line(i,0,i,239,0,0,255, BOTTOM_SCREEN);
+  draw_string_rot("Tetris 3DS Homebrew v0.1",20,210,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("NOP90",199,311,255,255,255, BOTTOM_SCREEN);
   draw_rect(119,19,300,220,255,255,0,BOTTOM_SCREEN);  
   do {
     initscreens();
@@ -41,16 +43,15 @@ void drawnextpiece(char piece, char state){
       for (i=0; i<4; i++)
         for (j=0; j<4; j++) if(pieces[piece][i+j*4]>0) {
           color=pieces[piece][i+j*4]*state;
-          draw_fillrect(((14-j)*20),(i+1)*20,((15-j)*20)-1,((i+2)*20)-1,colors[color][0],colors[color][1],colors[color][2], BOTTOM_SCREEN);
+          draw_fillrect(((14-j)*20),(i+1)*20+3,((15-j)*20)-1,((i+2)*20)+2,colors[color][0],colors[color][1],colors[color][2], BOTTOM_SCREEN);
           if(color){ 
-            draw_line(((14-j)*20),(i+1)*20,((15-j)*20)-1,(i+1)*20,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, BOTTOM_SCREEN);
-            draw_line(((14-j)*20),(i+1)*20,((14-j)*20),((i+2)*20)-1,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, BOTTOM_SCREEN);
-            draw_line(((15-j)*20)-1,(i+1)*20,((15-j)*20)-1,((i+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, BOTTOM_SCREEN);
-            draw_line(((14-j)*20),((i+2)*20)-1,((15-j)*20)-1,((i+2)*20)-1,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, BOTTOM_SCREEN);
+            draw_line(((14-j)*20),(i+1)*20+3,((15-j)*20)-1,(i+1)*20+3,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, BOTTOM_SCREEN);
+            draw_line(((14-j)*20),(i+1)*20+3,((14-j)*20),((i+2)*20)+2,colors[color][0]>>1,colors[color][1]>>1,colors[color][2]>>1, BOTTOM_SCREEN);
+            draw_line(((15-j)*20)-1,(i+1)*20+3,((15-j)*20)-1,((i+2)*20)+2,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, BOTTOM_SCREEN);
+            draw_line(((14-j)*20),((i+2)*20)+2,((15-j)*20)-1,((i+2)*20)+2,colors[color][0]<<1,colors[color][1]<<1,colors[color][2]<<1, BOTTOM_SCREEN);
           }
         }
 }
-
 
 void drawpiece(char x, char y, char rot, char piece, char state){
   char i,j,i1,j1;
@@ -58,14 +59,14 @@ void drawpiece(char x, char y, char rot, char piece, char state){
   switch (rot){
     case 0:
       for (i=0; i<4; i++)
-        for (j=0; j<4; j++) if(pieces[piece][i+j*4]>0) drawsquare(x+i,y-j,pieces[piece][i+j*4]*(state&1));
+        for (j=0; j<4; j++) if(pieces[piece][i+j*4]>0) drawsquare(x+i,y-j,pieces[piece][i+j*4]*(state));
     break;
     case 1:
       for (i=0; i<4; i++)
         for (j=0; j<4; j++){
           i1=j;
           j1=3-i;
-          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state&1));
+          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state));
         } 
     break;
     case 2:
@@ -73,7 +74,7 @@ void drawpiece(char x, char y, char rot, char piece, char state){
         for (j=0; j<4; j++){
           i1=3-i;
           j1=3-j;
-          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state&1));
+          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state));
         } 
     break;
     case 3:
@@ -81,7 +82,7 @@ void drawpiece(char x, char y, char rot, char piece, char state){
         for (j=0; j<4; j++){
           i1=3-j;
           j1=i;
-          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state&1));
+          if(pieces[piece][i1 + j1 *4]>0) drawsquare(x+i,y-j,pieces[piece][i1 + j1 *4]*(state));
         } 
     break;
   } 
@@ -101,18 +102,26 @@ void drawsquare(char x, char y, char color){
 
 char getlevel(){
   int HID_new,HID_old;
-  char click;
+  char click, sel,i;
   HID_old=0;
   click=0;
-  draw_string("Chose a level then Press Select",0,0,255,255,255, BOTTOM_SCREEN);
+  sel=0;
+  draw_string_rot("Choose a level",68,74,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("then Press Start",52,82,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Easy   (Lev. 1)",68,106,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Medium (Lev. 5)",68,122,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Hard   (Lev. 9)",68,138,255,255,255, BOTTOM_SCREEN);
   while (click==0){
+    for (i=0;i<3;i++) draw_string_rot(">",52,106+(16*i),255,(i==sel) ? 0 : 255,(i==sel) ? 0 : 255, BOTTOM_SCREEN);
     HID_new = read_word(HID);
     if(HID_new^HID_old){
       HID_old=HID_new;
-      if (!(HID_new & BUTTON_SELECT)) click=1; 
+      if (!(HID_new & BUTTON_RIGHT)) sel = (sel+5)%3; 
+      if (!(HID_new & BUTTON_LEFT)) sel = (sel+1)%3; 
+      if (!(HID_new & BUTTON_START)) click = 1; 
     }
   }
-  return 1;
+  return (sel * 4)+1;
 }
 
 void asknewgame(){
@@ -120,7 +129,8 @@ void asknewgame(){
   char click;
   HID_old=0;
   click=0;
-  draw_string("Press start for a new play",0,24,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Press start",74,130,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("for a new game",60,138,255,255,255, BOTTOM_SCREEN);
   while (click==0){
     HID_new = read_word(HID);
     if(HID_new^HID_old){
@@ -138,23 +148,26 @@ void startgame(char level){
 
 char playlevel(char level, int* points){
   char buf[13];
-  char linecompleted,i,j,linefull;
+  char linecompleted[1];
+  char i,j,linefull;
   char board[190];
   unsigned char nextpiece;
   initscreens();
   itoa(level,buf);
-  draw_string_rot("LEVEL : ",100,24,255,0,0, BOTTOM_SCREEN);
-  draw_string_rot(buf,164,24,255,255,255, BOTTOM_SCREEN);
-  draw_string_rot("Lines : 25",100,40,0,255,0, BOTTOM_SCREEN);
-  draw_string_rot("Points: ",100,56,0,0,255, BOTTOM_SCREEN);
+  draw_string_rot("LEVEL: ",116,40,255,0,0, BOTTOM_SCREEN);
+  draw_string_rot(buf,164,40,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Lines: ",116,56,0,255,0, BOTTOM_SCREEN);
+  draw_string_rot("25",164,56,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Score: ",116,72,0,0,255, BOTTOM_SCREEN);
   itoa(points[0],buf);
-  draw_string_rot(buf,164,56,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot(buf,164,72,255,255,255, BOTTOM_SCREEN);
   initboard(board);
+  linecompleted[0] = 0;
   nextpiece = read_word(TIMER) % 7;  
   do {  
     nextpiece = playpiece(nextpiece,linecompleted,level,points,board);
-  } while ((nextpiece < 8)&(linecompleted<25));
-  if (linecompleted < 25){
+  } while ((nextpiece < 8)&(linecompleted[0]<25));
+  if (linecompleted[0] < 25){
     return 0;
   } else {
     for (j=17;j>0;j--) {
@@ -164,12 +177,12 @@ char playlevel(char level, int* points){
         // white line
         for (i= 0; i<10;i++) drawsquare(i, j, 8);
         // pause 1sec
-        for (i= 0; i<100;i++) draw_fillrect(0,0,320,7,0,0,0,BOTTOM_SCREEN);
+        for (i= 0; i<800;i++) draw_fillrect(0,0,319,0,0,0,0,BOTTOM_SCREEN);
         points[0]+= (100+level*10);
       }
     }
     // pause 2sec
-    for (i= 0; i<200;i++) draw_fillrect(0,0,320,7,0,0,0,BOTTOM_SCREEN);
+    for (i= 0; i<1600;i++) draw_fillrect(0,0,319,0,0,0,0,BOTTOM_SCREEN);
     return 1;
   }
 }
@@ -180,9 +193,9 @@ void initboard(char* board){
     for (j=0;j<19;j++) board[i+j*10]=0;
 }
 
-char playpiece(char piece, char linecompleted, char level, int* points,char* board){
+char playpiece(char piece, char* linecompleted, char level, int* points,char* board){
   char buf[13];
-  int i, lines, HID_new,HID_old;
+  int i,j, lines, HID_new,HID_old,delay;
   char x,y,x1,y1,rot,rot1,notfalling;
   char nextpiece,state;
   drawnextpiece(piece, 0);
@@ -197,8 +210,11 @@ char playpiece(char piece, char linecompleted, char level, int* points,char* boa
   if (state){
     drawpiece(x,y,rot,piece,1);
     while (state){
-      for (i=0;i<(500-level*5 - linecompleted>>2)*notfalling;i++) {
-        draw_fillrect(0,0,320,7,0,0,0,BOTTOM_SCREEN);
+      delay= 500 - level*20 - linecompleted[0];
+      if (delay<1) delay=1;
+      for (i=0;i<delay*notfalling;i++) {
+//        for (j= 0; j<2;j++) draw_fillrect(0,0,319,0,0,0,0,BOTTOM_SCREEN); //slow down counter
+        draw_fillrect(0,0,319,0,0,0,0,BOTTOM_SCREEN); //slow down counter
         HID_new = read_word(HID);
         x1=x;
         rot1=rot;
@@ -212,7 +228,7 @@ char playpiece(char piece, char linecompleted, char level, int* points,char* boa
             rot1=rot;
             notfalling = 0;
           }
-          if (((x1!=x)|(rot1!=rot)) & isflying(piece,x1,y,rot1, board)){
+          if (((x1!=x)||(rot1!=rot)) && isflying(piece,x1,y,rot1, board)){
             drawpiece(x,y,rot,piece,0);
             x=x1;
             rot=rot1;
@@ -220,22 +236,20 @@ char playpiece(char piece, char linecompleted, char level, int* points,char* boa
           }
         }
       }
-      y1=y-1;
-      if (isflying(piece,x,y1,rot, board)){
+      if (isflying(piece,x,y-1,rot, board)){
         drawpiece(x,y,rot,piece,0);
-        y=y1;
+        y--;
         drawpiece(x,y,rot,piece,1);
       } else {
         lines = gluepiece(x,y,rot,piece,board);
         points[0] += (50 * lines) << lines;
-        linecompleted += lines;
+        linecompleted[0] += lines;
         state=0;
-        draw_fillrect(196,40,299,47,128,128,128,BOTTOM_SCREEN);
-        itoa(25 - linecompleted,buf);
-        draw_string_rot(buf,164,40,255,255,255, BOTTOM_SCREEN);
-        draw_fillrect(164,56,299,63,128,128,128,BOTTOM_SCREEN);
+        draw_fillrect(241,164,264,219,128,128,128,BOTTOM_SCREEN);
+        itoa(25-linecompleted[0],buf);
+        draw_string_rot(buf,164,56,255,255,255, BOTTOM_SCREEN);
         itoa(points[0],buf);
-        draw_string_rot(buf,196,56,255,255,255, BOTTOM_SCREEN);
+        draw_string_rot(buf,164,72,255,255,255, BOTTOM_SCREEN);
       }
     }
   } else return 8;
@@ -285,8 +299,6 @@ char gluepiece(char x, char y,char rot, char piece,char* board){
       lines++;
 // white line
       for (i= 0; i<10;i++) drawsquare(i, j, 8);
-// pause 0.5sec
-      for (i= 0; i<50;i++) draw_fillrect(0,0,320,7,0,0,0,BOTTOM_SCREEN);
 // traslo in basso
       for (k= j+1; k<18;k++) {
         for (i= 0; i<10;i++) {
@@ -294,9 +306,7 @@ char gluepiece(char x, char y,char rot, char piece,char* board){
           board[i+(k-1)*10] = board[i+k*10];
         } 
       }
-      y--;  
-// pause 0.1 sec  
-      for (i= 0; i<10;i++) draw_fillrect(0,0,320,7,0,0,0,BOTTOM_SCREEN);
+      j--;  
     } 
   } 
   return lines;
@@ -309,14 +319,14 @@ int isflying (char piece, char x, char y, char rot, char* board) {
   switch (rot){
     case 0:
       for (i=0; i<4; i++)
-        for (j=0; j<4; j++) if( (pieces[piece][i+j*4]>0) & ((y-j)<18) & ( ((x+i)<0) | ((x+i)>9) | ((y-j)<0) | (board[x+i + (y-j)*10] >0) ) ) check=0;
+        for (j=0; j<4; j++) if( (pieces[piece][i+j*4]>0) && ((y-j)<19) && ( ((x+i)<0) || ((x+i)>9) || ((y-j)<0) || (board[x+i + (y-j)*10] >0) ) ) check=0;
     break;
     case 1:
       for (i=0; i<4; i++)
         for (j=0; j<4; j++){
           i1=j;
           j1=3-i;
-          if((pieces[piece][i1+j1*4]>0) & ((y-j1)<18) & (((x+i1)<0)|((x+i1)>9)|((y-j1)<0)|(board[x+i + (y-j)*10] >0))) check=0;
+          if((pieces[piece][i1+j1*4]>0) && ((y-j1)<19) && ( ((x+i1)<0) || ((x+i1)>9) || ((y-j1)<0) || (board[x+i + (y-j)*10] >0) ) ) check=0;
       }
     break;
     case 2:
@@ -324,7 +334,7 @@ int isflying (char piece, char x, char y, char rot, char* board) {
         for (j=0; j<4; j++){ 
           i1=3-i;
           j1=3-j;
-          if((pieces[piece][i1+j1*4]>0) & ((y-j1)<18) & (((x+i1)<0)|((x+i1)>9)|((y-j1)<0)|(board[x+i + (y-j)*10] >0))) check=0;
+          if((pieces[piece][i1+j1*4]>0) && ((y-j1)<19) && (((x+i1)<0)||((x+i1)>9)||((y-j1)<0)||(board[x+i + (y-j)*10] >0))) check=0;
       }
     break;
     case 3:
@@ -332,11 +342,10 @@ int isflying (char piece, char x, char y, char rot, char* board) {
         for (j=0; j<4; j++){
           i1=3-j;
           j1=i;
-          if((pieces[piece][i1+j1*4]>0) & ((y-j1)<18) & (((x+i1)<0)|((x+i1)>9)|((y-j1)<0)|(board[x+i + (y-j)*10] >0))) check=0;
+          if((pieces[piece][i1+j1*4]>0) && ((y-j1)<19) && (((x+i1)<0)||((x+i1)>9)||((y-j1)<0)||(board[x+i + (y-j)*10] >0))) check=0;
       }
     break;
   } 
-
 
   return check;
 }
