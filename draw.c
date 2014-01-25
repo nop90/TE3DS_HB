@@ -126,7 +126,7 @@ void draw_string_rot(char* word, int x,int y, char r, char g, char b, int screen
         l = ascii_data[word[i]][j];
         for (k = 0; k < 8; k++){
           if ((mask >> k) & l){
-            draw_pixel(width+j+y+(line*8),-k+TOP_HEIGHT-tmp_x,r,g,b,screen);
+            draw_pixel(width-j-y-(line*8),k+tmp_x,r,g,b,screen);
           }     
         }
       }
