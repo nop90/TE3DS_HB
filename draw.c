@@ -1,5 +1,5 @@
 /* 
-  2d drawing primitives for 3DS - simplified for Tetris 3DS Homebrew
+  2d drawing primitives for 3DS - simplified for Te3ds 3DS Homebrew
   Nop90 - Public domain
 */
 
