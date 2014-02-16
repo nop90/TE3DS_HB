@@ -1,9 +1,9 @@
 TE3DS_HB
 ========
 
-Simple Tetris 3DS Homebrew
+Simple block puzzle 3DS Homebrew
 
-I wrote this Tetris clone from scratch based on what I remember of the original game.
+I wrote this from scratch based on what I remember of the coin-op game.
 
 Pieces can rotate only one direction, but the game is playable IMHB.
 
