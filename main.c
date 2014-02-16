@@ -1,5 +1,5 @@
 /* 
-  Tetris 3DS Homebrew
+  Te3DS 3DS Homebrew
   Nop90 - Public domain
 */
 #include "main.h"
@@ -15,7 +15,7 @@ int main(){
   for(i=0; i<400; i=i+3) draw_line(i,0,i,239,0,0,255, TOP_SCREEN);
   draw_rect(19,19,380,220,255,255,0,TOP_SCREEN);  
   for(i=0; i<320; i=i+3) draw_line(i,0,i,239,0,0,255, BOTTOM_SCREEN);
-  draw_string_rot("Tetris 3DS Homebrew v0.1",20,210,255,255,255, BOTTOM_SCREEN);
+  draw_string_rot("Te3DS 3DS Homebrew v0.1",20,210,255,255,255, BOTTOM_SCREEN);
   draw_string_rot("NOP90",199,311,255,255,255, BOTTOM_SCREEN);
   draw_rect(119,19,300,220,255,255,0,BOTTOM_SCREEN);  
   do {
